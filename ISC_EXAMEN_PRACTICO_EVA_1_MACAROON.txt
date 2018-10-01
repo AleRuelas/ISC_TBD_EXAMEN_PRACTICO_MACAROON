@@ -1,0 +1,1255 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): Y
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 24
+Server version: 8.0.12 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > create database Tecnologico;
+Query OK, 1 row affected (0.3966 sec)
+
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| evaluacion_1       |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| tecnologico        |
+| world              |
++--------------------+
+8 rows in set (0.0009 sec)
+
+ MySQL  localhost:3306 ssl  SQL > \use Tecnologico
+Default schema set to `Tecnologico`.
+Fetching table and column names from `tecnologico` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table institucion(
+                                           ... idInstitucion int,
+                                           ... Nombre varchar(100),
+                                           ... Direccion varchar(150),
+                                           ... Telefono int(13),
+                                           ... Correo varchar(30),
+                                           ... Presupuesto varchar(50));
+Query OK, 0 rows affected (1.5106 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Carrera(
+                                           ... idCarrera int,
+                                           ... Nombre varchar(100),
+                                           ... Creditos int,
+                                           ... Semestres int);
+Query OK, 0 rows affected (0.8729 sec)
+ MySQL  localhost:3306 ssl  tecnologico  SQL > alter table institucion add constraint primary key
+                                           ... (idInstitucion);
+Query OK, 0 rows affected (1.6941 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc institucion;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| idInstitucion | int(11)      | NO   | PRI | NULL    |       |
+| Nombre        | varchar(100) | YES  |     | NULL    |       |
+| Direccion     | varchar(150) | YES  |     | NULL    |       |
+| Telefono      | int(13)      | YES  |     | NULL    |       |
+| Correo        | varchar(30)  | YES  |     | NULL    |       |
+| Presupuesto   | varchar(50)  | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+6 rows in set (0.0023 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > alter table Carrera add constraint primary key
+                                           ... (idCarrera);
+Query OK, 0 rows affected (1.2173 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Carrera;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| idCarrera | int(11)      | NO   | PRI | NULL    |       |
+| Nombre    | varchar(100) | YES  |     | NULL    |       |
+| Creditos  | int(11)      | YES  |     | NULL    |       |
+| Semestres | int(11)      | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.0019 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Materia(
+                                           ... idMateria int primary key not null,
+                                           ... Nombre varchar(100),
+                                           ... Creditos int,
+                                           ... Semestre int,
+                                           ... Especialidad varchar(50));
+Query OK, 0 rows affected (0.6955 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Materia;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| idMateria    | int(11)      | NO   | PRI | NULL    |       |
+| Nombre       | varchar(100) | YES  |     | NULL    |       |
+| Creditos     | int(11)      | YES  |     | NULL    |       |
+| Semestre     | int(11)      | YES  |     | NULL    |       |
+| Especialidad | varchar(50)  | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+5 rows in set (0.0023 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Especialidad(
+                                           ... idEspecialidad int primary key not null auto_increment,
+                                           ... Nombre varchar(50),
+                                           ... No_Materias int);
+Query OK, 0 rows affected (0.6170 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Especialidad;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| idEspecialidad | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Nombre         | varchar(50) | YES  |     | NULL    |                |
+| No_Materias    | int(11)     | YES  |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0023 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Empleado(
+                                           ... idEmpleado int primary key auto_increment not null,
+                                           ... Nombre varchar(50),
+                                           ... Ap_Paterno varchar(50),
+                                           ... Ap_Materno varchar(50),
+                                           ... Fecha_Nacimiento date,
+                                           ... Lugar_Nacimiento varchar(50),
+                                           ... Sexo enum('Femenino','Masculino'),
+                                           ... CURP varchar(18),
+                                           ... RFC varchar(13),
+                                           ... Telefono int(13),
+                                           ... Correo varchar(50),
+                                           ... Domicilio varchar(100),
+                                           ... Estado_civil enum('Soltero','Casado','Divorciado',
+                                           ... 'Viudo'));
+Query OK, 0 rows affected (0.7296 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Empleado;
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| Field            | Type                                          | Null | Key | Default | Extra          |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| idEmpleado       | int(11)                                       | NO   | PRI | NULL    | auto_increment |
+| Nombre           | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Paterno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Materno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Fecha_Nacimiento | date                                          | YES  |     | NULL    |                |
+| Lugar_Nacimiento | varchar(50)                                   | YES  |     | NULL    |                |
+| Sexo             | enum('Femenino','Masculino')                  | YES  |     | NULL    |                |
+| CURP             | varchar(18)                                   | YES  |     | NULL    |                |
+| RFC              | varchar(13)                                   | YES  |     | NULL    |                |
+| Telefono         | int(13)                                       | YES  |     | NULL    |                |
+| Correo           | varchar(50)                                   | YES  |     | NULL    |                |
+| Domicilio        | varchar(100)                                  | YES  |     | NULL    |                |
+| Estado_civil     | enum('Soltero','Casado','Divorciado','Viudo') | YES  |     | NULL    |                |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+13 rows in set (0.0065 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > show tables;
++-----------------------+
+| Tables_in_tecnologico |
++-----------------------+
+| carrera               |
+| empleado              |
+| especialidad          |
+| institucion           |
+| materia               |
++-----------------------+
+5 rows in set (0.0024 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Puestos(
+                                           ... idPTrabajo int primary key not null auto_increment,
+                                           ... Nombre varchar(50));
+Query OK, 0 rows affected (0.6383 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Puestos;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| idPTrabajo | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Nombre     | varchar(50) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0023 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Alumnos(
+                                           ... No_Control int auto_increment primary key not null,
+                                           ... Nombre varchar(50),
+                                           ... Ap_Paterno varchar(50),
+                                           ... Ap_Materno varchar(50),
+                                           ... Fecha_Nacimiento date,
+                                           ... Lugar_Nacimiento varchar(50),
+                                           ... Sexo enum('Femenino','Masculino'),
+                                           ... CURP varchar(18),
+                                           ... RFC varchar(13),
+                                           ... Telefono int(13),
+                                           ... Correo varchar(50),
+                                           ... Domicilio varchar(100),
+                                           ... Estado_civil enum('Soltero','Casado','Divorciado','Viudo'));
+Query OK, 0 rows affected (0.5992 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Alumnos;
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| Field            | Type                                          | Null | Key | Default | Extra          |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| No_Control       | int(11)                                       | NO   | PRI | NULL    | auto_increment |
+| Nombre           | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Paterno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Materno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Fecha_Nacimiento | date                                          | YES  |     | NULL    |                |
+| Lugar_Nacimiento | varchar(50)                                   | YES  |     | NULL    |                |
+| Sexo             | enum('Femenino','Masculino')                  | YES  |     | NULL    |                |
+| CURP             | varchar(18)                                   | YES  |     | NULL    |                |
+| RFC              | varchar(13)                                   | YES  |     | NULL    |                |
+| Telefono         | int(13)                                       | YES  |     | NULL    |                |
+| Correo           | varchar(50)                                   | YES  |     | NULL    |                |
+| Domicilio        | varchar(100)                                  | YES  |     | NULL    |                |
+| Estado_civil     | enum('Soltero','Casado','Divorciado','Viudo') | YES  |     | NULL    |                |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+13 rows in set (0.0027 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > show tables;
++-----------------------+
+| Tables_in_tecnologico |
++-----------------------+
+| alumnos               |
+| carrera               |
+| empleado              |
+| especialidad          |
+| institucion           |
+| materia               |
+| puestos               |
++-----------------------+
+7 rows in set (0.0020 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > alter table Puestos add column Area varchar(50);
+Query OK, 0 rows affected (0.5452 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Detalle_Empleado( 
+					   ... idDetalle_Empleado int auto_increment not null primary key, 
+					   ... idInstituto int not null, 
+					   ... idPTrabajo int not null, 
+					   ... idEmpleado int not null, 
+					   ... Horas_de_trabajo int, Plaza varchar(50), 
+  					   ... Sueldo int, 
+					   ... Area varchar(50), 
+					   ... Foreign key(idInstituto) references Institucion(idInstitucion) 
+					   ... on update cascade on delete restrict, 
+					   ... foreign key(idPTrabajo) references Puestos(idPTrabajo) 
+					   ... on update cascade on delete restrict, 
+					   ... foreign key(idEmpleado) references Empleado(idEmpleado) 
+					   ... on update cascade on delete restrict);
+Query OK, 0 rows affected (1.0726 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Detalle_Empleado;
++--------------------+-------------+------+-----+---------+----------------+
+| Field              | Type        | Null | Key | Default | Extra          |
++--------------------+-------------+------+-----+---------+----------------+
+| idDetalle_Empleado | int(11)     | NO   | PRI | NULL    | auto_increment |
+| idInstituto        | int(11)     | NO   | MUL | NULL    |                |
+| idPTrabajo         | int(11)     | NO   | MUL | NULL    |                |
+| idEmpleado         | int(11)     | NO   | MUL | NULL    |                |
+| Horas_de_trabajo   | int(11)     | YES  |     | NULL    |                |
+| Plaza              | varchar(50) | YES  |     | NULL    |                |
+| Sueldo             | int(11)     | YES  |     | NULL    |                |
+| Area               | varchar(50) | YES  |     | NULL    |                |
++--------------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.0029 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Informacion_Alumno(
+                                           ... idInfA int primary key auto_increment not null,
+                                           ... No_Control int not null,
+                                           ... Idinstitucion int not null,
+                                           ... idCarrera int not null,
+                                           ... idEspecialidad int,
+                                           ... Semestre_actual int,
+                                           ... Promedio_Gral float,
+                                           ... Creditos_Aprobados int,
+                                           ... foreign key(No_Control) references Alumnos(No_Control)
+                                           ... on update cascade on delete restrict,
+                                           ... foreign key(idInstitucion) references
+                                           ... Institucion(idInstitucion) on update cascade
+                                           ... on delete restrict,
+                                           ... foreign key(idCarrera) references carrera(idCarrera)
+                                           ... on update cascade on delete restrict,
+                                           ... foreign key(idEspecialidad) references Especialidad
+                                           ... (idEspecialidad)
+                                           ... on update cascade on delete restrict);
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > show tables;
++-----------------------+
+| Tables_in_tecnologico |
++-----------------------+
+| alumnos               |
+| carrera               |
+| detalle_empleado      |
+| empleado              |
+| especialidad          |
+| informacion_alumno    |
+| institucion           |
+| materia               |
+| puestos               |
++-----------------------+
+9 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Informacion_Alumno;
++--------------------+---------+------+-----+---------+----------------+
+| Field              | Type    | Null | Key | Default | Extra          |
++--------------------+---------+------+-----+---------+----------------+
+| idInfA             | int(11) | NO   | PRI | NULL    | auto_increment |
+| No_Control         | int(11) | NO   | MUL | NULL    |                |
+| Idinstitucion      | int(11) | NO   | MUL | NULL    |                |
+| idCarrera          | int(11) | NO   | MUL | NULL    |                |
+| idEspecialidad     | int(11) | NO   | MUL | NULL    |                |
+| Semestre_actual    | int(11) | YES  |     | NULL    |                |
+| Promedio_Gral      | float   | YES  |     | NULL    |                |
+| Creditos_Aprobados | int(11) | YES  |     | NULL    |                |
++--------------------+---------+------+-----+---------+----------------+
+8 rows in set (0.0027 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Kardex(
+                                           ... idKardex int auto_increment primary key not null,
+                                           ... idInfA int not null,
+                                           ... idMateria int not null,
+                                           ... Calificacion float,
+                                           ... Evaluacion enum('Ev. Ord. 1','Ev.Ord. 2','Especial'),
+                                           ... Observaciones varchar(50),
+                                           ... foreign key(idInfA) references Informacion_Alumno(
+                                           ... idInfA) on update cascade on delete restrict,
+                                           ... foreign key(idMateria) references Materia(idMateria)
+                                           ... on update cascade on delete restrict);
+Query OK, 0 rows affected (0.8477 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > create table Horario(
+                                           ... idHorario int auto_increment primary key not null,
+                                           ... no_control int not null,
+                                           ... idMateria int not null,
+                                           ... idEmpleado int not null,
+                                           ... Grupo varchar(10),
+                                           ... Aula varchar(10),
+                                           ... Hora_inicio time,
+                                           ... Hora_fin time,
+                                           ... foreign key(no_control) references Alumnos(no_control)
+                                           ... on update cascade on delete restrict,
+                                           ... foreign key(idMateria) references Materia(idMateria)
+                                           ... on update cascade on delete restrict,
+                                           ... foreign key(idEmpleado) references Empleado(idEmpleado)
+                                           ... on update cascade on delete restrict);
+Query OK, 0 rows affected (1.0890 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > show tables;
++-----------------------+
+| Tables_in_tecnologico |
++-----------------------+
+| alumnos               |
+| carrera               |
+| detalle_empleado      |
+| empleado              |
+| especialidad          |
+| horario               |
+| informacion_alumno    |
+| institucion           |
+| kardex                |
+| materia               |
+| puestos               |
++-----------------------+
+11 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > alter table Alumnos drop column RFC;
+Query OK, 0 rows affected (1.2215 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Alumnos;
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| Field            | Type                                          | Null | Key | Default | Extra          |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| No_Control       | int(11)                                       | NO   | PRI | NULL    | auto_increment |
+| Nombre           | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Paterno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Materno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Fecha_Nacimiento | date                                          | YES  |     | NULL    |                |
+| Lugar_Nacimiento | varchar(50)                                   | YES  |     | NULL    |                |
+| Sexo             | enum('Femenino','Masculino')                  | YES  |     | NULL    |                |
+| CURP             | varchar(18)                                   | YES  |     | NULL    |                |
+| Telefono         | int(13)                                       | YES  |     | NULL    |                |
+| Correo           | varchar(50)                                   | YES  |     | NULL    |                |
+| Domicilio        | varchar(100)                                  | YES  |     | NULL    |                |
+| Estado_civil     | enum('Soltero','Casado','Divorciado','Viudo') | YES  |     | NULL    |                |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+12 rows in set (0.0026 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > alter table puestos drop column area;
+Query OK, 0 rows affected (0.9424 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc puestos;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| idPTrabajo | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Nombre     | varchar(50) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0017 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > show tables;
++-----------------------+
+| Tables_in_tecnologico |
++-----------------------+
+| alumnos               |
+| carrera               |
+| detalle_empleado      |
+| empleado              |
+| especialidad          |
+| horario               |
+| informacion_alumno    |
+| institucion           |
+| kardex                |
+| materia               |
+| puestos               |
++-----------------------+
+11 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc institucion;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| idInstitucion | int(11)      | NO   | PRI | NULL    |       |
+| Nombre        | varchar(100) | YES  |     | NULL    |       |
+| Direccion     | varchar(150) | YES  |     | NULL    |       |
+| Telefono      | int(13)      | YES  |     | NULL    |       |
+| Correo        | varchar(30)  | YES  |     | NULL    |       |
+| Presupuesto   | varchar(50)  | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+6 rows in set (0.0019 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc carrera;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| idCarrera | int(11)      | NO   | PRI | NULL    |       |
+| Nombre    | varchar(100) | YES  |     | NULL    |       |
+| Creditos  | int(11)      | YES  |     | NULL    |       |
+| Semestres | int(11)      | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Materia;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| idMateria    | int(11)      | NO   | PRI | NULL    |       |
+| Nombre       | varchar(100) | YES  |     | NULL    |       |
+| Creditos     | int(11)      | YES  |     | NULL    |       |
+| Semestre     | int(11)      | YES  |     | NULL    |       |
+| Especialidad | varchar(50)  | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+5 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc especialidad;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| idEspecialidad | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Nombre         | varchar(50) | YES  |     | NULL    |                |
+| No_Materias    | int(11)     | YES  |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0024 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc empleado;
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| Field            | Type                                          | Null | Key | Default | Extra          |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| idEmpleado       | int(11)                                       | NO   | PRI | NULL    | auto_increment |
+| Nombre           | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Paterno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Materno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Fecha_Nacimiento | date                                          | YES  |     | NULL    |                |
+| Lugar_Nacimiento | varchar(50)                                   | YES  |     | NULL    |                |
+| Sexo             | enum('Femenino','Masculino')                  | YES  |     | NULL    |                |
+| CURP             | varchar(18)                                   | YES  |     | NULL    |                |
+| RFC              | varchar(13)                                   | YES  |     | NULL    |                |
+| Telefono         | int(13)                                       | YES  |     | NULL    |                |
+| Correo           | varchar(50)                                   | YES  |     | NULL    |                |
+| Domicilio        | varchar(100)                                  | YES  |     | NULL    |                |
+| Estado_civil     | enum('Soltero','Casado','Divorciado','Viudo') | YES  |     | NULL    |                |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+13 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc puestos;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| idPTrabajo | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Nombre     | varchar(50) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0017 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc detalle_empleado;
++--------------------+-------------+------+-----+---------+----------------+
+| Field              | Type        | Null | Key | Default | Extra          |
++--------------------+-------------+------+-----+---------+----------------+
+| idDetalle_Empleado | int(11)     | NO   | PRI | NULL    | auto_increment |
+| idInstituto        | int(11)     | NO   | MUL | NULL    |                |
+| idPTrabajo         | int(11)     | NO   | MUL | NULL    |                |
+| idEmpleado         | int(11)     | NO   | MUL | NULL    |                |
+| Horas_de_trabajo   | int(11)     | YES  |     | NULL    |                |
+| Plaza              | varchar(50) | YES  |     | NULL    |                |
+| Sueldo             | int(11)     | YES  |     | NULL    |                |
+| Area               | varchar(50) | YES  |     | NULL    |                |
++--------------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.0018 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc Alumnos;
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| Field            | Type                                          | Null | Key | Default | Extra          |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+| No_Control       | int(11)                                       | NO   | PRI | NULL    | auto_increment |
+| Nombre           | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Paterno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Ap_Materno       | varchar(50)                                   | YES  |     | NULL    |                |
+| Fecha_Nacimiento | date                                          | YES  |     | NULL    |                |
+| Lugar_Nacimiento | varchar(50)                                   | YES  |     | NULL    |                |
+| Sexo             | enum('Femenino','Masculino')                  | YES  |     | NULL    |                |
+| CURP             | varchar(18)                                   | YES  |     | NULL    |                |
+| Telefono         | int(13)                                       | YES  |     | NULL    |                |
+| Correo           | varchar(50)                                   | YES  |     | NULL    |                |
+| Domicilio        | varchar(100)                                  | YES  |     | NULL    |                |
+| Estado_civil     | enum('Soltero','Casado','Divorciado','Viudo') | YES  |     | NULL    |                |
++------------------+-----------------------------------------------+------+-----+---------+----------------+
+12 rows in set (0.0026 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc informacion_alumno;
++--------------------+---------+------+-----+---------+----------------+
+| Field              | Type    | Null | Key | Default | Extra          |
++--------------------+---------+------+-----+---------+----------------+
+| idInfA             | int(11) | NO   | PRI | NULL    | auto_increment |
+| No_Control         | int(11) | NO   | MUL | NULL    |                |
+| Idinstitucion      | int(11) | NO   | MUL | NULL    |                |
+| idCarrera          | int(11) | NO   | MUL | NULL    |                |
+| idEspecialidad     | int(11) | NO   | MUL | NULL    |                |
+| Semestre_actual    | int(11) | YES  |     | NULL    |                |
+| Promedio_Gral      | float   | YES  |     | NULL    |                |
+| Creditos_Aprobados | int(11) | YES  |     | NULL    |                |
++--------------------+---------+------+-----+---------+----------------+
+8 rows in set (0.0019 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc kardex;
++---------------+-------------------------------------------+------+-----+---------+----------------+
+| Field         | Type                                      | Null | Key | Default | Extra          |
++---------------+-------------------------------------------+------+-----+---------+----------------+
+| idKardex      | int(11)                                   | NO   | PRI | NULL    | auto_increment |
+| idInfA        | int(11)                                   | NO   | MUL | NULL    |                |
+| idMateria     | int(11)                                   | NO   | MUL | NULL    |                |
+| Calificacion  | float                                     | YES  |     | NULL    |                |
+| Evaluacion    | enum('Ev. Ord. 1','Ev.Ord. 2','Especial') | YES  |     | NULL    |                |
+| Observaciones | varchar(50)                               | YES  |     | NULL    |                |
++---------------+-------------------------------------------+------+-----+---------+----------------+
+6 rows in set (0.0020 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > desc horario;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| idHorario   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| no_control  | int(11)     | NO   | MUL | NULL    |                |
+| idMateria   | int(11)     | NO   | MUL | NULL    |                |
+| idEmpleado  | int(11)     | NO   | MUL | NULL    |                |
+| Grupo       | varchar(10) | YES  |     | NULL    |                |
+| Aula        | varchar(10) | YES  |     | NULL    |                |
+| Hora_inicio | time        | YES  |     | NULL    |                |
+| Hora_fin    | time        | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.0027 sec)
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`institucion`
+                              ... CHANGE COLUMN `idInstitucion` `idInstitucion` INT(2) NOT NULL ,
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(100) NOT NULL ,
+                              ... CHANGE COLUMN `Direccion` `Direccion` VARCHAR(150) NOT NULL ,
+                              ... CHANGE COLUMN `Telefono` `Telefono` INT(13) NOT NULL ,
+                              ... CHANGE COLUMN `Correo` `Correo` VARCHAR(30) NOT NULL ,
+                              ... CHANGE COLUMN `Presupuesto` `Presupuesto` VARCHAR(50) NULL ,
+                              ... ADD UNIQUE INDEX `idInstitucion_UNIQUE` (`idInstitucion` ASC) VISIBLE;
+Query OK, 0 rows affected (1.8568 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`carrera`
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(100) NOT NULL ,
+                              ... CHANGE COLUMN `Creditos` `Creditos` INT(11) NOT NULL ,
+                              ... CHANGE COLUMN `Semestres` `Semestres` INT(11) NOT NULL ,
+                              ... ADD UNIQUE INDEX `idCarrera_UNIQUE` (`idCarrera` ASC) VISIBLE;
+Query OK, 0 rows affected (2.0469 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`materia`
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(100) NOT NULL ,
+                              ... CHANGE COLUMN `Creditos` `Creditos` INT(11) NOT NULL ,
+                              ... CHANGE COLUMN `Semestre` `Semestre` INT(11) NOT NULL ,
+                              ... ADD UNIQUE INDEX `idMateria_UNIQUE` (`idMateria` ASC) VISIBLE;
+Query OK, 0 rows affected (1.7715 sec)
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`especialidad`
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(50) NOT NULL ,
+                              ... ADD UNIQUE INDEX `idEspecialidad_UNIQUE` (`idEspecialidad` ASC) VISIBLE;
+Query OK, 0 rows affected (1.3944 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`empleado`
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Ap_Paterno` `Ap_Paterno` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Ap_Materno` `Ap_Materno` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Fecha_Nacimiento` `Fecha_Nacimiento` DATE NOT NULL ,
+                              ... CHANGE COLUMN `Sexo` `Sexo` ENUM('Femenino', 'Masculino') NOT NULL ,
+                              ... CHANGE COLUMN `CURP` `CURP` VARCHAR(18) NOT NULL ,
+                              ... CHANGE COLUMN `RFC` `RFC` VARCHAR(13) NOT NULL ,
+                              ... CHANGE COLUMN `Telefono` `Telefono` INT(13) NOT NULL ,
+                              ... CHANGE COLUMN `Correo` `Correo` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Domicilio` `Domicilio` VARCHAR(100) NOT NULL ,
+                              ... ADD UNIQUE INDEX `idEmpleado_UNIQUE` (`idEmpleado` ASC) VISIBLE;
+Query OK, 0 rows affected (1.6174 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`puestos`
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(50) NOT NULL ;
+Query OK, 0 rows affected (2.0375 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`detalle_empleado`
+                              ... CHANGE COLUMN `Area` `Area` VARCHAR(50) NOT NULL ,
+                              ... ADD UNIQUE INDEX `idDetalle_Empleado_UNIQUE` (`idDetalle_Empleado` ASC) VISIBLE;
+Query OK, 0 rows affected (1.9967 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`horario`
+                              ... DROP FOREIGN KEY `horario_ibfk_1`;
+Query OK, 0 rows affected (0.2661 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`horario`
+                              ... CHANGE COLUMN `no_control` `no_control` INT(8) NOT NULL ,
+                              ... CHANGE COLUMN `Grupo` `Grupo` VARCHAR(10) NOT NULL ,
+                              ... CHANGE COLUMN `Aula` `Aula` VARCHAR(10) NOT NULL ;
+Query OK, 0 rows affected (1.5200 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`horario`
+                              ... ADD CONSTRAINT `horario_ibfk_1`
+                              ...   FOREIGN KEY (`no_control`)
+                              ...   REFERENCES `tecnologico`.`alumnos` (`no_control`)
+                              ...   ON UPDATE CASCADE;
+Query OK, 0 rows affected (2.0469 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`alumnos`
+                              ... CHANGE COLUMN `No_Control` `No_Control` INT(8) NOT NULL ,
+                              ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Ap_Paterno` `Ap_Paterno` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Ap_Materno` `Ap_Materno` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Fecha_Nacimiento` `Fecha_Nacimiento` DATE NOT NULL ,
+                              ... CHANGE COLUMN `Lugar_Nacimiento` `Lugar_Nacimiento` VARCHAR(50) NULL ,
+                              ... CHANGE COLUMN `Sexo` `Sexo` ENUM('Femenino', 'Masculino') NOT NULL ,
+                              ... CHANGE COLUMN `CURP` `CURP` VARCHAR(18) NOT NULL ,
+                              ... CHANGE COLUMN `Telefono` `Telefono` INT(13) NOT NULL ,
+                              ... CHANGE COLUMN `Correo` `Correo` VARCHAR(50) NOT NULL ,
+                              ... CHANGE COLUMN `Estado_civil` `Estado_civil` ENUM('Soltero', 'Casado', 'Divorciado', 'Viudo') NULL ,                 ... CHANGE COLUMN `Estado_civil` `Estado_civil` ENUM('Soltero', 'Casado', 'Divorciado', 'V
+                              ... ADD UNIQUE INDEX `No_Control_UNIQUE` (`No_Control` ASC) VISIBLE;
+Query OK, 0 rows affected (2.0588 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  SQL > ALTER TABLE `tecnologico`.`informacion_alumno`
+                              ... CHANGE COLUMN `Semestre_actual` `Semestre_actual` INT(11) NOT NULL ,
+                              ... CHANGE COLUMN `Promedio_Gral` `Promedio_Gral` FLOAT NULL ;
+Query OK, 0 rows affected (1.7777 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`informacion_alumno`
+                                           ... CHANGE COLUMN `Semestre_actual` `Semestre_actual` INT(11) NOT NULL ,
+                                           ... CHANGE COLUMN `Promedio_Gral` `Promedio_Gral` FLOAT NULL ,
+                                           ... ADD INDEX `no_control_idx` (`No_Control` ASC) VISIBLE;
+Query OK, 0 rows affected (0.5207 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ;
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`informacion_alumno`
+                                           ... ADD CONSTRAINT `No_Control`
+                                           ...   FOREIGN KEY (`No_Control`)
+                                           ...   REFERENCES `tecnologico`.`alumnos` (`No_Control`)
+                                           ...   ON DELETE RESTRICT
+                                           ...   ON UPDATE CASCADE;
+Query OK, 0 rows affected (2.9781 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`kardex`
+                                           ... CHANGE COLUMN `Calificacion` `Calificacion` FLOAT NOT NULL ,
+                                           ... ADD UNIQUE INDEX `idKardex_UNIQUE` (`idKardex` ASC) VISIBLE,
+                                           ... ADD INDEX `idInfA_idx` (`idInfA` ASC) VISIBLE;
+Query OK, 0 rows affected (2.1462 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ;
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`kardex`
+                                           ... ADD CONSTRAINT `idInfA`
+                                           ...   FOREIGN KEY (`idInfA`)
+                                           ...   REFERENCES `tecnologico`.`informacion_alumno` (`idInfA`)
+                                           ...   ON DELETE CASCADE
+                                           ...   ON UPDATE RESTRICT;
+Query OK, 0 rows affected (4.6802 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`institucion`
+                                           ... CHANGE COLUMN `Telefono` `Telefono` VARCHAR(20) NOT NULL ;
+Query OK, 0 rows affected (2.3163 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into institucion(idinstitucion,nombre,direccion, telefono,correo) values( 55,'INSTITUTO TECNOLOGICO DE CHIHUAHUA II', 'Ave. Tecnológico #2909, Chihuahua, Chih. México, CP 31310','614-2-01-20-00','hola@itchii.com');
+Query OK, 1 row affected (0.2082 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into carrera(idCarrera,Nombre,Creditos,
+                                           ... Semestres) values(
+                                           ... 1,'INGENIERIA EN SISTEMAS COMPUTACIONALES',150,9);
+Query OK, 1 row affected (0.2472 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into carrera(idCarrera,Nombre,Creditos, Semestres) values(2,'INGENIERIA INDUSTRIAL',140,8);
+Query OK, 1 row affected (0.1979 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into especialidad(nombre,no_materias)
+                                           ... values('ESPECIALIDAD EN DESARROLLO DE APLICACIONES
+                                           ... PARA DISPOSITIVOS MOVILES',5);
+ERROR: 1406 (22001): Data too long for column 'Nombre' at row 1
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`especialidad`
+                                           ... CHANGE COLUMN `Nombre` `Nombre` VARCHAR(100) NOT NULL ;
+Query OK, 0 rows affected (1.9676 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into especialidad(nombre,no_materias) values('ESPECIALIDAD EN DESARROLLO DE APLICACIONES  PARA DISPOSITIVOS MOVILES',5);
+Query OK, 1 row affected (0.2205 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into materia(idMateria,nombre,creditos,semestre,especialidad)
+                                           ... values(1,'FUNDAMENTOS DE PROGRAMACION',
+                                           ... 5,1,'NO');
+Query OK, 1 row affected (0.1985 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into materia(idMateria,nombre,creditos,semestre,especialidad) values(2,'CALCULO DIFERENCIAL', 5,1,'NO');
+Query OK, 1 row affected (0.1869 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`empleado`
+                                           ... CHANGE COLUMN `Telefono` `Telefono` VARCHAR(20) NOT NULL ;
+Query OK, 0 rows affected (4.6326 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > INSERT INTO empleado( nombre,ap_paterno,ap_materno,fecha_nacimiento,sexo,curp,rfc, telefono,correo,domicilio) values ('Jose','Chavez','Lopez','1970-09-30','Masculino','CHLJ700930HCHLJL03', 'CHLJ700930J02',6142639202,'JoseLopez@gmail.com','Av.Sicomoro #7363');
+Query OK, 1 row affected (0.3560 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > INSERT INTO empleado( nombre,ap_paterno,ap_materno,fecha_nacimiento,sexo,curp,rfc, telefono,correo,domicilio) values ('Maria','Martinez','Gonzalez','1978-11-15','Femenino','MAGM781115MCHLJL08', 'MAGM781115J12',6144239261,'MARIA.MARGO@gmail.com','Calle abandonada a la luz #23043');
+Query OK, 1 row affected (0.2488 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into puestos(nombre) values('Maestro');
+Query OK, 1 row affected (0.3264 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into puestos(nombre) values('Conserje');
+Query OK, 1 row affected (0.4098 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into puestos(nombre) values('Jefe de departamento');
+Query OK, 1 row affected (0.3882 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into puestos(nombre) values('Administrativo');
+Query OK, 1 row affected (0.3453 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into puestos(nombre) values('Directivo');
+Query OK, 1 row affected (0.1918 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into detalle_empleado(idinstituto,idptrabajo,idempleado,
+                                           ... Horas_de_trabajo,area) values(
+                                           ... 55,1,1,4,'DEPARTAMENTO DE SISTEMAS');
+Query OK, 1 row affected (0.4579 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into detalle_empleado(idinstituto,idptrabajo,idempleado, Horas_de_trabajo,area) values( 55,1,2,3,'CIENCIAS BASICAS');
+Query OK, 1 row affected (0.2066 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`alumnos`
+                                           ... CHANGE COLUMN `Telefono` `Telefono` VARCHAR(20) NOT NULL ;
+Query OK, 0 rows affected (1.8435 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into alumnos(no_control,nombre,ap_paterno,ap_materno,
+                                           ... fecha_nacimiento,lugar_nacimiento,sexo,curp,telefono,correo,
+                                           ... domicilio,estado_civil) values(
+                                           ... 18550501,'Luis','Arellanes','Vazquez','2000-01-02','Chihuahua',
+                                           ... 'Masculino','ARVL000102MCHLJL03',6142093421,'LUIS.AREVA@gmail.com',
+                                           ... 'Laguna verde #9801','Soltero');
+Query OK, 1 row affected (0.1926 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into alumnos(no_control,nombre,ap_paterno,ap_materno, fecha_nacimiento,sexo,curp,telefono,correo, domicilio,estado_civil) values(18550502,'Alondra','Morales','Rodriguez','2000-02-18','Femenino','MORA000218MCHLJL11',6141330926,'A.Morales.R@gmail.com', 'Monte el alto #323','Soltero');
+Query OK, 1 row affected (0.2332 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`informacion_alumno`
+                                           ... DROP FOREIGN KEY `informacion_alumno_ibfk_4`;
+Query OK, 0 rows affected (0.4381 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`informacion_alumno`
+                                           ... CHANGE COLUMN `idEspecialidad` `idEspecialidad` INT(11) NULL ;
+Query OK, 0 rows affected (1.5723 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`informacion_alumno`
+                                           ... ADD CONSTRAINT `informacion_alumno_ibfk_4`
+                                           ...   FOREIGN KEY (`idEspecialidad`)
+                                           ...   REFERENCES `tecnologico`.`especialidad` (`idespecialidad`)
+                                           ...   ON UPDATE CASCADE;
+Query OK, 0 rows affected (2.6018 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into informacion_alumno(no_control,idinstitucion,
+                                           ... idcarrera,semestre_actual,promedio_gral) values(
+                                           ... 18550501,55,1,1,9.8);
+Query OK, 1 row affected (0.4656 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into informacion_alumno(no_control,idinstitucion, idcarrera,semestre_actual,promedio_gral) values( 18550502,55,1,1,7.9);
+Query OK, 1 row affected (0.1670 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion)
+                                           ... values(1,1,92);
+Query OK, 1 row affected (0.2775 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(1,2,90);
+Query OK, 1 row affected (0.2181 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(2,2,81);
+Query OK, 1 row affected (0.2420 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(2,1,76);
+Query OK, 1 row affected (0.2154 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > ALTER TABLE `tecnologico`.`horario`
+                                           ... ADD CONSTRAINT `idAlumno`
+                                           ...   FOREIGN KEY (`idAlumno`)
+                                           ...   REFERENCES `tecnologico`.`informacion_alumno` (`idInfA`)
+                                           ...   ON DELETE RESTRICT
+                                           ...   ON UPDATE CASCADE;
+Query OK, 0 rows affected (2.1276 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into informacion_alumno(no_control,idinstitucion,idcarrera,semestre_actual,promedio_gral) values(18550501,55,1,1,9.8);
+Query OK, 1 row affected (0.3101 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into informacion_alumno(no_control,idinstitucion, idcarrera,semestre_actual,promedio_gral) values( 18550502,55,1,1,7.9);
+Query OK, 1 row affected (0.2205 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(3,1,92);
+Query OK, 1 row affected (0.2545 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(3,2,90);
+Query OK, 1 row affected (0.2082 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(4,2,81);
+Query OK, 1 row affected (0.2708 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into kardex(idInfa,idmateria,calificacion) values(4,1,76);
+Query OK, 1 row affected (0.3007 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > insert into horario(idalumno,idmateria,idempleado,grupo,aula,hora_inicio,hora_fin) values(3,1,1,'A','F6','08:00:00','09:00:00');
+Query OK, 1 row affected (0.2406 sec)
+
+ MySQL  localhost:3306 ssl  tecnologico  SQL > 
+insert into horario(idalumno,idmateria,idempleado,grupo,aula,hora_inicio,hora_fin) values(3,2,2,'A','F4','09:00:00','10:00:00');
+Query OK, 1 row affected (0.1168 sec)
+
+ MySQL  localhost:3306 ssl  SQL > create user 'alumno'@'localhost' identified by 'alum_123';
+Query OK, 0 rows affected (0.1848 sec)
+
+ MySQL  localhost:3306 ssl  SQL > create user 'maestro'@'localhost' identified by 'maes_456';
+Query OK, 0 rows affected (0.2111 sec)
+
+ MySQL  localhost:3306 ssl  SQL > create user 'jefe'@'localhost' identified by 'boss_789';
+Query OK, 0 rows affected (0.1606 sec)
+
+ MySQL  localhost:3306 ssl  SQL > create user 'director'@'localhost' identified by 'direc_123';
+Query OK, 0 rows affected (0.0923 sec)
+
+ MySQL  localhost:3306 ssl  SQL > create user 'secretaria'@'localhost' identified by 'secre_456';
+Query OK, 0 rows affected (0.1340 sec)
+
+ MySQL  localhost:3306 ssl  SQL > create user 'coordinador'@'localhost' identified by 'coor_789';
+Query OK, 0 rows affected (0.1511 sec)
+
+ MySQL  localhost:3306 ssl  SQL > select user from mysql.user;
++------------------+
+| user             |
++------------------+
+| alumno           |
+| coordinador      |
+| director         |
+| eva1_7           |
+| jefe             |
+| maestro          |
+| mysql.infoschema |
+| mysql.session    |
+| mysql.sys        |
+| root             |
+| secretaria       |
++------------------+
+11 rows in set (0.0006 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.alumnos to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1864 sec)
+
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.carrera to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1514 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.especialidad to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1892 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant update on tecnologico.alumnos to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.2147 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant insert on tecnologico.alumnos to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1761 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.horario to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1480 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.informacion_alumno to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1982 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.institucion to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1347 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.kardex to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1679 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.materia to 'alumno'@'localhost';
+Query OK, 0 rows affected (0.1286 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.alumnos to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1165 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.carrera to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1312 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.detalle_empleado to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.0854 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.empleado to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1325 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant update on tecnologico.empleado to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1220 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.especialidad to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1521 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.horario to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.2503 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.informacion_alumno to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1740 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.institucion to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.0759 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.materia to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1203 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.kardex to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.0925 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant insert on tecnologico.kardex to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1866 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant update on tecnologico.kardex to 'maestro'@'localhost';
+Query OK, 0 rows affected (0.1799 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.alumnos to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.1530 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant update on tecnologico.alumnos to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.1071 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.carrera to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.3141 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, delete, update on tecnologico.detalle_empleado to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.2980 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant all on tecnologico.empleado to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.0807 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.especialidad to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.0954 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.horario to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.1695 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.informacion_alumno to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.0727 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.institucion to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.1331 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.materia to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.1001 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.kardex to 'jefe'@'localhost';
+Query OK, 0 rows affected (1.8444 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, insert on tecnologico.puestos to 'jefe'@'localhost';
+Query OK, 0 rows affected (0.1275 sec)
+
+ MySQL  localhost:3306 ssl  SQL > MySQL  localhost:3306 ssl  SQL > grant select, update, insert on tecnologico.alumnos to 'director'@'localhost';
+Query OK, 0 rows affected (0.1768 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.carrera to 'director'@'localhost';
+Query OK, 0 rows affected (0.2227 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, delete, update on tecnologico.detalle_empleado to 'director'@'localhost';
+Query OK, 0 rows affected (0.1834 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant all on tecnologico.empleado to 'director'@'localhost';
+Query OK, 0 rows affected (0.1807 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.especialidad to 'director'@'localhost';
+Query OK, 0 rows affected (0.3880 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.horario to 'director'@'localhost';
+Query OK, 0 rows affected (0.1130 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update on tecnologico.informacion_alumno to 'director'@'localhost';
+Query OK, 0 rows affected (0.1879 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.institucion to 'director'@'localhost';
+Query OK, 0 rows affected (0.1279 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.kardex to 'director'@'localhost';
+Query OK, 0 rows affected (0.1910 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.materia to 'director'@'localhost';
+Query OK, 0 rows affected (0.1552 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant all on tecnologico.puestos to 'director'@'localhost';
+Query OK, 0 rows affected (0.1650 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update, insert on tecnologico.alumnos to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1644 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.carrera to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1759 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.detalle_empleado to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1046 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update on tecnologico.empleado to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1255 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.especialidad to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1284 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant all on tecnologico.horario to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1059 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update on tecnologico.informacion_alumno to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1114 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.institucion to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1614 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.kardex to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1419 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.materia to 'secretaria'@'localhost';
+Query OK, 0 rows affected (0.1688 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, delete, update on tecnologico.alumnos to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.2210 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.carrera to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1613 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.detalle_empleado to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1646 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update on tecnologico.empleado to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1441 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant all on tecnologico.horario to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.0944 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update, insert on tecnologico.informacion_alumno to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1558 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select, update, insert on tecnologico.kardex to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1705 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.institucion to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1635 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.materia to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1150 sec)
+
+ MySQL  localhost:3306 ssl  SQL > grant select on tecnologico.especialidad to 'coordinador'@'localhost';
+Query OK, 0 rows affected (0.1206 sec)
+
+ MySQL  localhost:3306 ssl  SQL > show grants for 'alumno'@'localhost';
++---------------------------------------------------------------------------------+
+| Grants for alumno@localhost                                                     |
++---------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `alumno`@`localhost`                                      |
+| GRANT SELECT, INSERT, UPDATE ON `tecnologico`.`alumnos` TO `alumno`@`localhost` |
+| GRANT SELECT ON `tecnologico`.`carrera` TO `alumno`@`localhost`                 |
+| GRANT SELECT ON `tecnologico`.`especialidad` TO `alumno`@`localhost`            |
+| GRANT SELECT ON `tecnologico`.`horario` TO `alumno`@`localhost`                 |
+| GRANT SELECT ON `tecnologico`.`informacion_alumno` TO `alumno`@`localhost`      |
+| GRANT SELECT ON `tecnologico`.`institucion` TO `alumno`@`localhost`             |
+| GRANT SELECT ON `tecnologico`.`kardex` TO `alumno`@`localhost`                  |
+| GRANT SELECT ON `tecnologico`.`materia` TO `alumno`@`localhost`                 |
++---------------------------------------------------------------------------------+
+9 rows in set (0.0006 sec)
+
+ MySQL  localhost:3306 ssl  SQL > show grants for 'maestro'@'localhost';
++---------------------------------------------------------------------------------+
+| Grants for maestro@localhost                                                    |
++---------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `maestro`@`localhost`                                     |
+| GRANT SELECT ON `tecnologico`.`alumnos` TO `maestro`@`localhost`                |
+| GRANT SELECT ON `tecnologico`.`carrera` TO `maestro`@`localhost`                |
+| GRANT SELECT ON `tecnologico`.`detalle_empleado` TO `maestro`@`localhost`       |
+| GRANT SELECT, UPDATE ON `tecnologico`.`empleado` TO `maestro`@`localhost`       |
+| GRANT SELECT ON `tecnologico`.`especialidad` TO `maestro`@`localhost`           |
+| GRANT SELECT ON `tecnologico`.`horario` TO `maestro`@`localhost`                |
+| GRANT SELECT ON `tecnologico`.`informacion_alumno` TO `maestro`@`localhost`     |
+| GRANT SELECT ON `tecnologico`.`institucion` TO `maestro`@`localhost`            |
+| GRANT SELECT, INSERT, UPDATE ON `tecnologico`.`kardex` TO `maestro`@`localhost` |
+| GRANT SELECT ON `tecnologico`.`materia` TO `maestro`@`localhost`                |
++---------------------------------------------------------------------------------+
+11 rows in set (0.0005 sec)
+
+
+ MySQL  localhost:3306 ssl  SQL > show grants for 'jefe'@'localhost';
++----------------------------------------------------------------------------------------+
+| Grants for jefe@localhost                                                              |
++----------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `jefe`@`localhost`                                               |
+| GRANT SELECT, UPDATE ON `tecnologico`.`alumnos` TO `jefe`@`localhost`                  |
+| GRANT SELECT ON `tecnologico`.`carrera` TO `jefe`@`localhost`                          |
+| GRANT SELECT, UPDATE, DELETE ON `tecnologico`.`detalle_empleado` TO `jefe`@`localhost` |
+| GRANT ALL PRIVILEGES ON `tecnologico`.`empleado` TO `jefe`@`localhost`                 |
+| GRANT SELECT ON `tecnologico`.`especialidad` TO `jefe`@`localhost`                     |
+| GRANT SELECT ON `tecnologico`.`horario` TO `jefe`@`localhost`                          |
+| GRANT SELECT ON `tecnologico`.`informacion_alumno` TO `jefe`@`localhost`               |
+| GRANT SELECT ON `tecnologico`.`institucion` TO `jefe`@`localhost`                      |
+| GRANT SELECT ON `tecnologico`.`kardex` TO `jefe`@`localhost`                           |
+| GRANT SELECT ON `tecnologico`.`materia` TO `jefe`@`localhost`                          |
+| GRANT SELECT, INSERT ON `tecnologico`.`puestos` TO `jefe`@`localhost`                  |
++----------------------------------------------------------------------------------------+
+12 rows in set (0.0004 sec)
+
+ MySQL  localhost:3306 ssl  SQL > show grants for 'director'@'localhost';
++--------------------------------------------------------------------------------------------+
+| Grants for director@localhost                                                              |
++--------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `director`@`localhost`                                               |
+| GRANT SELECT, INSERT, UPDATE ON `tecnologico`.`alumnos` TO `director`@`localhost`          |
+| GRANT SELECT ON `tecnologico`.`carrera` TO `director`@`localhost`                          |
+| GRANT SELECT, UPDATE, DELETE ON `tecnologico`.`detalle_empleado` TO `director`@`localhost` |
+| GRANT ALL PRIVILEGES ON `tecnologico`.`empleado` TO `director`@`localhost`                 |
+| GRANT SELECT ON `tecnologico`.`especialidad` TO `director`@`localhost`                     |
+| GRANT SELECT ON `tecnologico`.`horario` TO `director`@`localhost`                          |
+| GRANT SELECT, UPDATE ON `tecnologico`.`informacion_alumno` TO `director`@`localhost`       |
+| GRANT SELECT ON `tecnologico`.`institucion` TO `director`@`localhost`                      |
+| GRANT SELECT ON `tecnologico`.`kardex` TO `director`@`localhost`                           |
+| GRANT SELECT ON `tecnologico`.`materia` TO `director`@`localhost`                          |
+| GRANT ALL PRIVILEGES ON `tecnologico`.`puestos` TO `director`@`localhost`                  |
++--------------------------------------------------------------------------------------------+
+12 rows in set (0.0004 sec)
+
+ MySQL  localhost:3306 ssl  SQL > show grants for 'secretaria'@'localhost';
++----------------------------------------------------------------------------------------+
+| Grants for secretaria@localhost                                                        |
++----------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `secretaria`@`localhost`                                         |
+| GRANT SELECT, INSERT, UPDATE ON `tecnologico`.`alumnos` TO `secretaria`@`localhost`    |
+| GRANT SELECT ON `tecnologico`.`carrera` TO `secretaria`@`localhost`                    |
+| GRANT SELECT ON `tecnologico`.`detalle_empleado` TO `secretaria`@`localhost`           |
+| GRANT SELECT, UPDATE ON `tecnologico`.`empleado` TO `secretaria`@`localhost`           |
+| GRANT SELECT ON `tecnologico`.`especialidad` TO `secretaria`@`localhost`               |
+| GRANT ALL PRIVILEGES ON `tecnologico`.`horario` TO `secretaria`@`localhost`            |
+| GRANT SELECT, UPDATE ON `tecnologico`.`informacion_alumno` TO `secretaria`@`localhost` |
+| GRANT SELECT ON `tecnologico`.`institucion` TO `secretaria`@`localhost`                |
+| GRANT SELECT ON `tecnologico`.`kardex` TO `secretaria`@`localhost`                     |
+| GRANT SELECT ON `tecnologico`.`materia` TO `secretaria`@`localhost`                    |
++----------------------------------------------------------------------------------------+
+11 rows in set (0.0004 sec)
+
+ MySQL  localhost:3306 ssl  SQL > show grants for 'coordinador'@'localhost';
++-------------------------------------------------------------------------------------------------+
+| Grants for coordinador@localhost                                                                |
++-------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `coordinador`@`localhost`                                                 |
+| GRANT SELECT, UPDATE, DELETE ON `tecnologico`.`alumnos` TO `coordinador`@`localhost`            |
+| GRANT SELECT ON `tecnologico`.`carrera` TO `coordinador`@`localhost`                            |
+| GRANT SELECT ON `tecnologico`.`detalle_empleado` TO `coordinador`@`localhost`                   |
+| GRANT SELECT, UPDATE ON `tecnologico`.`empleado` TO `coordinador`@`localhost`                   |
+| GRANT SELECT ON `tecnologico`.`especialidad` TO `coordinador`@`localhost`                       |
+| GRANT ALL PRIVILEGES ON `tecnologico`.`horario` TO `coordinador`@`localhost`                    |
+| GRANT SELECT, INSERT, UPDATE ON `tecnologico`.`informacion_alumno` TO `coordinador`@`localhost` |
+| GRANT SELECT ON `tecnologico`.`institucion` TO `coordinador`@`localhost`                        |
+| GRANT SELECT, INSERT, UPDATE ON `tecnologico`.`kardex` TO `coordinador`@`localhost`             |
+| GRANT SELECT ON `tecnologico`.`materia` TO `coordinador`@`localhost`                            |
++-------------------------------------------------------------------------------------------------+
+11 rows in set (0.0004 sec)
+
+
+
+
+
+
